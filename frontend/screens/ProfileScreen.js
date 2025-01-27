@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IPConfig } from "../config";
 import moment from "moment";
-import mergeDateAndTime from "../util/mergeTime";
 
 const ProfileScreen = ({ navigation }) => {
   const route = useRoute();

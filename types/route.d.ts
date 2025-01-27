@@ -6,17 +6,23 @@
 //     // Feed: { sort: 'latest' | 'top' } | undefined;
 //   };
 
-  declare module "*.png"
+declare module "*.png";
 
-  declare module '@env' {
-    const GOOGLE_MAPS_API_KEY: string;
-  }
+declare module "@env" {
+  const GOOGLE_MAPS_API_KEY: string;
+}
 
-  // import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+// import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from "@react-navigation/native";
+
+type user = {
+  id: number;
+  name: string;
+  email: string;
+};
 
 export type RootStackParamList = {
-  Main: { user: any } | undefined; 
+  Main: { user: user } | undefined;
   BusBooking: undefined;
   VehicleSelection: {
     departure: string;
@@ -31,9 +37,7 @@ export type RootStackParamList = {
     date: string;
     isRoundTrip: boolean;
   };
-  SignUp:{
-    
-  }
+  SignUp: {};
 };
 export type BottomTabParamList = {
   Home: undefined;
@@ -41,14 +45,20 @@ export type BottomTabParamList = {
   Saved: undefined;
   Profile: undefined;
 };
-export type TripListNavigationProp = StackNavigationProp<RootStackParamList, 'TripList'>;
+export type TripListNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "TripList"
+>;
 
-export type TripListRouteProp = RouteProp<RootStackParamList, 'TripList'>;
+export type TripListRouteProp = RouteProp<RootStackParamList, "TripList">;
 
 export type BusBookingAppNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "BusBooking"
 >;
 
-export type HomeScreenNavigationProp = NativeStackNavigationProp<BottomTabParamList, "Home">;
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
+  BottomTabParamList,
+  "Home"
+>;
 export type HomeScreenRouteProp = RouteProp<BottomTabParamList, "Home">;
