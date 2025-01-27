@@ -16,6 +16,7 @@
 import { RouteProp } from '@react-navigation/native';
 
 export type RootStackParamList = {
+  Main: undefined;
   BusBooking: undefined;
   VehicleSelection: {
     departure: string;
