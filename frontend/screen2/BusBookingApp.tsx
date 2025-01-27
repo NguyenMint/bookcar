@@ -66,7 +66,12 @@ const BusBookingApp = () => {
       Alert.alert("Error", "Please provide all required information.");
       return;
     }
-
+  
+    if (departure === destination) {
+      Alert.alert("Error", "Departure and destination cannot be the same.");
+      return;
+    }
+  
     navigation.navigate("VehicleSelection", {
       departure,
       destination,
@@ -74,7 +79,7 @@ const BusBookingApp = () => {
       isRoundTrip,
     });
   };
-
+  
   return (
     <View style={styles.container}>
       {/* Departure Field */}
