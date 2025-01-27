@@ -31,7 +31,12 @@ export type RootStackParamList = {
     isRoundTrip: boolean;
   };
 };
-
+export type BottomTabParamList = {
+  Home: undefined;
+  Bookings: undefined;
+  Saved: undefined;
+  Profile: undefined;
+};
 export type TripListNavigationProp = StackNavigationProp<RootStackParamList, 'TripList'>;
 
 export type TripListRouteProp = RouteProp<RootStackParamList, 'TripList'>;

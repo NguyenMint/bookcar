@@ -6,6 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
+// Import screens
 import HomeScreen from "../screens/HomeScreen";
 import SavedScreen from "../screens/SavedScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -13,10 +15,11 @@ import SignupScreen from "../screens/SignupScreen";
 import BusBookingApp from "../screen2/BusBookingApp";
 import VehicleSelection from "../screen2/VehicleSelection";
 import TripList from "../screen2/TripList";
+import { BottomTabParamList, RootStackParamList } from "../../types/route";
 
 // Bottom Tabs Navigator
-const BottomTabs = () => {
-  const Tab = createBottomTabNavigator();
+const BottomTabs: React.FC = () => {
+  const Tab = createBottomTabNavigator<BottomTabParamList>();
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -77,24 +80,12 @@ const BottomTabs = () => {
 };
 
 // Stack Navigator
-const StackNavigator = () => {
-  const Stack = createNativeStackNavigator();
+const StackNavigator: React.FC = () => {
+  const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* Login and Signup - Tabs hidden */}
-        {/* <Stack.Screen
-          name="Login"
-          component={SignupScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUp"
-          component={SignupScreen}
-          options={{ headerShown: false }}
-        /> */}
-
         {/* Main App - Includes Bottom Tabs */}
         <Stack.Screen
           name="Main"
