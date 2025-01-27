@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+// import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 const styles = StyleSheet.create({
   textInput: {
     padding: 10,
@@ -30,7 +30,7 @@ const HomeScreen = () => {
         style={styles.textInput}
         placeholder="Where to?"
       />
-      <GooglePlacesAutocomplete
+      {/* <GooglePlacesAutocomplete
         // nearbyPlacesAPI="GooglePlacesSearch"
         // enablePoweredByContainer={false}
         placeholder="Search"
@@ -46,7 +46,7 @@ const HomeScreen = () => {
           language: 'en',
         }}
         // debounce={400}
-      />
+      /> */}
     </View>
   );
 };
