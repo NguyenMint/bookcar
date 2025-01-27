@@ -46,3 +46,6 @@ export type BusBookingAppNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "BusBooking"
 >;
+
+export type HomeScreenNavigationProp = NativeStackNavigationProp<BottomTabParamList, "Home">;
+export type HomeScreenRouteProp = RouteProp<BottomTabParamList, "Home">;
