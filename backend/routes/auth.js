@@ -274,51 +274,6 @@ router.get("/customer-bookings", async (req, res) => {
       res.json({ exists: false });
     }
   });
-
-  // try {
-  //   const query = `
-  //     SELECT
-  //       userid,
-  //       COUNT(*) AS BookingCount
-  //     FROM appointments
-  //     WHERE Status = 3
-  //     GROUP BY userid
-  //   `;
-  //   const result = await connection.query(query);
-  //   res.status(200).json(result.rows);
-  // } catch (error) {
-  //   res.status(500).json({ error: "Failed to fetch booking counts." });
-  // }
 });
 
-// router.post("/send", async (req, res) => {
-//   const { appointmentId, email } = req.body;
-
-//   try {
-//     // Fetch booking details from the database
-//     const booking = await Booking.findById(appointmentId); // Replace with your DB query
-//     if (!booking) return res.status(404).send("Booking not found");
-
-//     const transporter = nodemailer.createTransport({
-//       service: "Gmail", // Or your email service provider
-//       auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS,
-//       },
-//     });
-
-//     const mailOptions = {
-//       from: process.env.EMAIL_USER,
-//       to: email,
-//       subject: "Your Booking is Confirmed",
-//       text: `Dear ${booking.CustomerName},\n\nYour booking for ${booking.ServiceName} on ${booking.DateSlot} at ${booking.StartTime} has been confirmed.\n\nThank you for choosing us!\n\nBest regards,\nSPA Team`,
-//     };
-
-//     await transporter.sendMail(mailOptions);
-//     res.status(200).send("Email sent successfully");
-//   } catch (error) {
-//     console.error("Error sending email:", error);
-//     res.status(500).send("Failed to send email");
-//   }
-// });
 module.exports = router;
