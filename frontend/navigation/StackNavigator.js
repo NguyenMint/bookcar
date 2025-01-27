@@ -1,36 +1,30 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
-import SavedScreen from "../screens/SavedScreen";
-import BookingScreen from "../screens/BookingScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import LoginScreen from "../screens/LoginScreen";
-import SignupScreen from "../screens/SignupScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import TimeSlotSelectionScreen from "../screens/TimeSlotSelection";
+import HomeScreen from "../screens/HomeScreen";
+import SavedScreen from "../screens/SavedScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import SignupScreen from "../screens/SignupScreen";
 import BusBookingApp from "../screen2/BusBookingApp";
 import VehicleSelection from "../screen2/VehicleSelection";
 import TripList from "../screen2/TripList";
 
-// Define BottomTabs for users and Admin (as before)
-function BottomTabs({ route }) {
-  const { user } = route.params || {};
+// Bottom Tabs Navigator
+const BottomTabs = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
-        children={() => <HomeScreen />}
-        initialParams={{ user }}
+        component={HomeScreen}
         options={{
           tabBarLabel: "Home",
-          headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Entypo name="home" size={24} color="black" />
@@ -41,11 +35,9 @@ function BottomTabs({ route }) {
       />
       <Tab.Screen
         name="Bookings"
-        children={() => <BusBookingApp />}
-        initialParams={{ user }}
+        component={BusBookingApp}
         options={{
           tabBarLabel: "Bookings",
-          headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Ionicons name="notifications" size={24} color="black" />
@@ -56,11 +48,9 @@ function BottomTabs({ route }) {
       />
       <Tab.Screen
         name="Saved"
-        children={() => <SavedScreen />}
-        initialParams={{ user }}
+        component={SavedScreen}
         options={{
           tabBarLabel: "Saved",
-          headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <AntDesign name="heart" size={24} color="black" />
@@ -71,11 +61,9 @@ function BottomTabs({ route }) {
       />
       <Tab.Screen
         name="Profile"
-        initialParams={{ user }}
-        children={({ navigation }) => <ProfileScreen navigation={navigation} />}
+        component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
-          headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Ionicons name="person" size={24} color="black" />
@@ -86,41 +74,45 @@ function BottomTabs({ route }) {
       />
     </Tab.Navigator>
   );
-}
+};
 
+// Stack Navigator
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* Login and Signup - Tabs hidden */}
+        {/* <Stack.Screen
           name="Login"
-          component={BusBookingApp}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="SignUp"
           component={SignupScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="SignUp"
+          component={SignupScreen}
+          options={{ headerShown: false }}
+        /> */}
+
+        {/* Main App - Includes Bottom Tabs */}
+        <Stack.Screen
+          name="Main"
+          component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+
+        {/* Nested Stack Screens (Show Bottom Tabs by default) */}
+        <Stack.Screen
           name="VehicleSelection"
           component={VehicleSelection}
-          options={{ title: "Chọn xe", headerShown: true }}
+          options={{ title: "Chọn xe" }}
         />
         <Stack.Screen
           name="TripList"
           component={TripList}
-          options={{ title: "Chọn dịch vụ", headerShown: true }}
+          options={{ title: "Chọn dịch vụ" }}
         />
-        <Stack.Screen name="Main" options={{ headerShown: false }}>
-          {({ route }) => {
-            const { user } = route.params || {};
-            return <BottomTabs route={{ params: { user } }} />;
-          }}
-        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
