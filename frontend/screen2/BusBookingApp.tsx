@@ -63,12 +63,12 @@ const BusBookingApp = () => {
 
   const handleSearch = () => {
     if (!departure || !destination || !date) {
-      Alert.alert("Error", "Please provide all required information.");
+      Alert.alert("Lỗi", "Bạn chưa điền đủ thông tin.");
       return;
     }
   
     if (departure === destination) {
-      Alert.alert("Error", "Departure and destination cannot be the same.");
+      Alert.alert("Lỗi", "Điểm đến và điểm đi không được giống nhau.");
       return;
     }
   

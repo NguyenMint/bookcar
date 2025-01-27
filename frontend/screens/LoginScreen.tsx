@@ -1,25 +1,29 @@
-// LoginScreen.js
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IPConfig } from "../config";
+import { RootStackParamList } from "../../types/route";
 
-const LoginScreen = () => {
-  const navigation = useNavigation();
-  // State variables to hold username and password
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+// Define navigation prop type for LoginScreen
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "Main">;
 
+const LoginScreen: React.FC = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>(); // Navigation with type safety
+  const [username, setUsername] = useState<string>(""); // Username state
+  const [password, setPassword] = useState<string>(""); // Password state
+
+  // Handle login
   const handleLogin = async () => {
     if (!username || !password) {
       Alert.alert("Error", "Please fill in both username and password.");
@@ -27,21 +31,18 @@ const LoginScreen = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://" + IPConfig + ":5500/api/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch(`http://${IPConfig}:5500/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
       const data = await response.json();
 
       if (!response.ok) {
-        Alert.alert("Lỗi", data.message || "Đăng nhập thất bại!");
+        Alert.alert("Error", data.message || "Login failed!");
         return;
       }
-      
+
       navigation.navigate("Main", { user: data.user });
     } catch (error) {
       console.error("Network error:", error);
@@ -49,7 +50,7 @@ const LoginScreen = () => {
     }
   };
 
-  // Handle navigation to the Register (Signup) screen
+  // Navigate to the Signup screen
   const handleRegister = () => {
     navigation.navigate("SignUp");
   };
@@ -106,7 +107,7 @@ const LoginScreen = () => {
 
       <TouchableOpacity
         style={styles.signInButtonContainer}
-        onPress={handleLogin} // Trigger login function on press
+        onPress={handleLogin}
       >
         <Text style={styles.signIn}>Sign in</Text>
         <View style={styles.arrowSignIn}>
@@ -124,7 +125,7 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen; // Export the component
+export default LoginScreen;
 
 // Styles for the LoginScreen component
 const styles = StyleSheet.create({
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "black",
   },
-  signInText: { 
+  signInText: {
     textAlign: "center",
     fontSize: 18,
     color: "#262626",

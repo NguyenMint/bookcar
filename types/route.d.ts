@@ -16,7 +16,7 @@
 import { RouteProp } from '@react-navigation/native';
 
 export type RootStackParamList = {
-  Main: undefined;
+  Main: { user: any } | undefined; 
   BusBooking: undefined;
   VehicleSelection: {
     departure: string;
@@ -31,6 +31,9 @@ export type RootStackParamList = {
     date: string;
     isRoundTrip: boolean;
   };
+  SignUp:{
+    
+  }
 };
 export type BottomTabParamList = {
   Home: undefined;
