@@ -1,0 +1,1 @@
+export const IPConfig="172.22.6.195";
