@@ -19,6 +19,7 @@ type user = {
   id: number;
   name: string;
   email: string;
+  Role: number;
 };
 
 export type RootStackParamList = {
@@ -38,7 +39,11 @@ export type RootStackParamList = {
     isRoundTrip: boolean;
   };
   SignUp: {};
+  Profile: { user: user }; // Ensure Profile receives user
+  Login: {};
+  Saved: { user: { id: number; name: string } } | undefined;
 };
+
 export type BottomTabParamList = {
   Home: undefined;
   Bookings: undefined;
@@ -62,3 +67,39 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
   "Home"
 >;
 export type HomeScreenRouteProp = RouteProp<BottomTabParamList, "Home">;
+
+export type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Profile"
+>;
+export type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
+
+interface ProfileScreenProps {
+  navigation: ProfileScreenNavigationProp;
+  route: ProfileScreenRouteProp;
+}
+
+export type SavedScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Saved"
+>;
+
+export type SavedScreenRouteProp = RouteProp<RootStackParamList, "Saved">;
+
+interface SavedScreenProps {
+  navigation: NativeStackNavigationProp<RootStackParamList, "Saved">;
+  route: RouteProp<RootStackParamList, "Saved">;
+}
+
+interface Booking {
+  AppointmentID: number;
+  ServiceName: string;
+  DateSlot: string;
+  StartTime: string;
+  Price: number;
+  Status: number;
+}
+export type SignupScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "SignUp"
+>;

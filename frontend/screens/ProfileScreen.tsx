@@ -1,18 +1,24 @@
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IPConfig } from "../config";
 import moment from "moment";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ProfileScreenProps } from "../../types/route";
 
-const ProfileScreen = ({ navigation }) => {
-  const route = useRoute();
-  const { user } = route.params || {};
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [totalPrice, setTotalPrice] = useState(0);
+const sampleUser = {
+  id: "1",
+  name: "User",
+};
 
-  const fetchServerTime = async () => {
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, route }) => {
+  const { user } = route.params || { user: sampleUser };
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  const fetchServerTime = async (): Promise<string | undefined> => {
     try {
       const response = await fetch(`http://${IPConfig}:5500/api/server/time`);
       const data = await response.json();
@@ -26,7 +32,7 @@ const ProfileScreen = ({ navigation }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://${IPConfig}:5500/api/user/bookings?userId=${user?.UserID}`
+        `http://${IPConfig}:5500/api/user/bookings?id=${user?.id}`
       );
 
       if (!response.ok) {
@@ -37,9 +43,7 @@ const ProfileScreen = ({ navigation }) => {
       const currentTime = moment(await fetchServerTime());
 
       const updatedBookings = await Promise.all(
-        data.map(async (booking) => {
-          return booking;
-        })
+        data.map(async (booking: any) => booking)
       );
 
       // Calculate the total price for completed bookings
@@ -57,26 +61,24 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  // Fetch bookings on screen focus
   useFocusEffect(
     React.useCallback(() => {
-      if (user?.UserID) {
+      if (user?.id) {
         fetchBookings();
       }
     }, [user])
   );
-  // Handle logout action
+
   const handleLogout = () => {
     Alert.alert("Thoát", "Bạn có chắc chắn muốn đăng xuất?", [
       { text: "Hủy", style: "cancel" },
       {
         text: "Đăng xuất",
-        onPress: () => navigation.replace("Login"), // Navigate to LoginScreen
+        onPress: () => navigation.replace("Login"),
       },
     ]);
   };
 
-  // If user data is unavailable, show an error message
   if (!user) {
     return (
       <View style={styles.container}>
@@ -87,28 +89,18 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headerText}>
-        Thông tin {user?.Role === 1 ? "Nhân viên" : "Khách hàng"}{" "}
-        {/* Display user role */}
-      </Text>
-
-      {/* Display user profile information */}
+      {/* <Text style={styles.headerText}>
+        Thông tin {user?.Role === 1 ? "Nhân viên" : "Khách hàng"}
+      </Text> */}
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Tên:</Text>
-        <Text style={styles.value}>{user.FullName}</Text>
+        <Text style={styles.value}>{user.name}</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.label}>Email:</Text>
-        <Text style={styles.value}>{user.Email || "(Không có)"}</Text>
+        <Text style={styles.label}>email:</Text>
+        {/* <Text style={styles.value}>{user.email || "(Không có)"}</Text> */}
       </View>
-      {user?.Role === 0 && (
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Tổng chi phí:</Text>
-          <Text style={styles.value}>{totalPrice.toLocaleString()} VND</Text>
-        </View>
-      )}
 
-      {/* Logout button */}
       <TouchableOpacity
         style={[styles.button, styles.logoutButton]}
         onPress={handleLogout}

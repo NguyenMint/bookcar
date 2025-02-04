@@ -17,16 +17,21 @@ import { IPConfig } from "../config";
 import mergeDateAndTime from "../util/mergeTime";
 import moment from "moment";
 import statusMapping from "../util/status";
+import { Booking, SavedScreenProps } from "../../types/route";
 
-const SavedScreen = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const { user } = route.params || {};
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
+const sampleUser = {
+  id: "1",
+  name: "User",
+};
+
+const SavedScreen: React.FC<SavedScreenProps> = ({ navigation, route }) => {
+  const { user } = route.params || {user : sampleUser};
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
 
   // Fetch server time from API
-  const fetchServerTime = async () => {
+  const fetchServerTime = async (): Promise<string | undefined> => {
     try {
       const response = await fetch(`http://${IPConfig}:5500/api/server/time`);
       const data = await response.json();
@@ -40,7 +45,7 @@ const SavedScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      title: `Lịch đặt của ${user?.FullName || "User"}`,
+      title: `Lịch đặt của ${user?.name || "User"}`,
       headerTitleStyle: styles.headerTitle,
       headerStyle: styles.header,
       headerRight: () => (
@@ -59,15 +64,14 @@ const SavedScreen = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://${IPConfig}:5500/api/user/bookings?userId=${user?.UserID}`
+        `http://${IPConfig}:5500/api/user/bookings?userId=${user?.id}`
       );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      
+      const data: Booking[] = await response.json();
       const currentTime = moment(await fetchServerTime());
 
       const updatedBookings = await Promise.all(
@@ -75,7 +79,7 @@ const SavedScreen = () => {
           const appointmentTime = moment(
             mergeDateAndTime(booking.DateSlot, booking.StartTime)
           );
-          
+
           // Update status if overdue
           if (
             booking.Status === 1 &&
@@ -121,19 +125,19 @@ const SavedScreen = () => {
   // Fetch bookings on screen focus
   useFocusEffect(
     React.useCallback(() => {
-      if (user?.UserID) {
+      if (user?.id) {
         fetchBookings();
       }
     }, [user])
   );
 
   // Render individual booking item
-  const renderBookingItem = ({ item }) => {
+  const renderBookingItem = ({ item }: { item: Booking }) => {
     const statusInfo = statusMapping[item.Status] || {
       text: "Unknown",
       color: "#000",
     };
-    
+
     return (
       <View style={styles.bookingItem}>
         <Text style={styles.bookingTitle}>{item.ServiceName}</Text>
@@ -141,12 +145,6 @@ const SavedScreen = () => {
           Ngày: {moment(item.DateSlot).format("DD/MM")} - {item.StartTime}
         </Text>
         <Text style={styles.bookingDetails}>Giá: {item.Price}</Text>
-        <Text style={[styles.details]}>
-          Trạng thái:{" "}
-          <Text style={[styles.details, { color: statusInfo.color }]}>
-            {statusInfo.text}
-          </Text>
-        </Text>
       </View>
     );
   };
@@ -187,11 +185,6 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     marginRight: 12,
-  },
-  screenHeader: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 16,
   },
   bookingItem: {
     padding: 16,

@@ -16,4 +16,4 @@ const statusMapping = {
     color: "#dc3545", // Red
   },
 };
-module.exports = statusMapping;
+export default statusMapping;

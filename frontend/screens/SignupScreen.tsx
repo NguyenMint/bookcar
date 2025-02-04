@@ -13,19 +13,21 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import Entypo from "@expo/vector-icons/Entypo";
 import { IPConfig } from "../config";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList, SignupScreenNavigationProp } from "../../types/route";
 
-// SigninScreen component where users can create an account
+// SignupScreen component where users can create an account
 const SignupScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<SignupScreenNavigationProp>();
 
   // State variables for form inputs
-  const [fullName, setFullName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState(""); // State for email
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [email, setEmail] = useState<string>(""); // State for email
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  // Placeholder for register button functionality
+  // Handle new customer booking (signup)
   const handleNewCustomerBooking = async () => {
     try {
       // Validate inputs
@@ -56,7 +58,7 @@ const SignupScreen = () => {
       // Optionally, you can handle the user data response here, such as navigating to a new screen
       Alert.alert("Success", "User created successfully");
       navigation.navigate("Login");
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert("Error", error.message);
     }
   };
@@ -144,7 +146,7 @@ const SignupScreen = () => {
 
 export default SignupScreen;
 
-// Styles for the SigninScreen component
+// Styles for the SignupScreen component
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F5F5F5",
@@ -190,12 +192,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333333", // Darker color for input text
   },
-  forgotPassword: {
-    color: "#BEBEBE",
-    textAlign: "right",
-    width: "90%",
-    marginTop: 10, // Add a bit more space between the input and forgot password
-  },
   signInButtonContainer: {
     flexDirection: "row",
     marginTop: 40, // Increased margin for better spacing
@@ -216,28 +212,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#ffffff",
     marginLeft: 12,
-  },
-  footerText: {
-    color: "#262626",
-    textAlign: "center",
-    fontSize: 16,
-    marginTop: 15,
-  },
-  footerContainer: {
-    marginTop: 30,
-    paddingHorizontal: 30, // Adjusted fixed horizontal padding
-  },
-  socialMediaContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10, // Added margin for social media section
-  },
-  socialIcon: {
-    backgroundColor: "#FFFFFF",
-    elevation: 10,
-    margin: 10,
-    padding: 12,
-    borderRadius: 50,
   },
 });
